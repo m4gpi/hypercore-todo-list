@@ -20,3 +20,4 @@ node bin display
 ## TODO: 
 - Share the discovery key on the DHT and get bash a hash to share with friends
 - Add multifeed and kappa-core to allow multiple people to write to the todo list 
+- Implement the MVC pattern - build out a set of controllers and models - extract from the core application logic 
