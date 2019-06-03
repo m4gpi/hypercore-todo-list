@@ -48,13 +48,9 @@ function command (feed) {
     .argv
 }
 
-function log (data) {
-  console.log(data)
-}
-
 function callback (err, res) {
   if (err) throw err
-  log(res)
+  console.log(res)
 }
 
 _feed.on('ready', () => {
