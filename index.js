@@ -3,7 +3,10 @@ const path = require('path')
 const os = require('os')
 const yargs = require('yargs')
 
-const APP_ROOT = path.join(os.homedir(), '.hyperlist')
+const APP_NAME = require('package.json').name
+const APP_ROOT = path.join(os.homedir(), `.${APP_NAME}`)
+
+const Item = require('./models/item')
 
 const _feed = hypercore(APP_ROOT, { createIfMissing: true, overwrite: false })
 
@@ -45,21 +48,6 @@ function processCommand (feed) {
     })
 
     .argv
-}
-
-function Item (params) {
-  const { name } = params
-
-  const self = {
-    type: 'list/item',
-    name
-  }
-
-  return Object.assign(self, {
-    toString: () => (
-      JSON.stringify(self, null, 2)
-    )
-  })
 }
 
 function log (data) {
