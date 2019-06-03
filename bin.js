@@ -3,7 +3,7 @@ const path = require('path')
 const os = require('os')
 const yargs = require('yargs')
 
-const APP_NAME = require('package.json').name
+const APP_NAME = require('./package.json').name
 const APP_ROOT = path.join(os.homedir(), `.${APP_NAME}`)
 
 const Item = require('./models/item')
@@ -24,18 +24,13 @@ function processCommand (feed) {
       feed.append(item.toString(), callback)
     })
 
-    .command('get', 'get an item from your list', (yargs) => {
-      yargs.positional('index', {
-        describe: 'pass an index',
-        demandOption: true,
-        type: 'integer'
-      })
-    }, (argv) => {
-      const { index } = argv
+    .command('get', 'get an item from your list', (argv) => {
+      const index = argv.argv._[1]
+      if (isNaN(index)) return callback(new Error(`${index} is not a number.`))
       feed.get(index, { valueEncoding: 'json' }, callback)
     })
 
-    .command('display', 'display your entire list', (argv) => {
+    .command('display', 'display your entire list', () => {
       var stream = feed.createReadStream({ start: 0, end: feed.length })
 
       const items = []
