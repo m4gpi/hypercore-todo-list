@@ -1,4 +1,5 @@
 const hypercore = require('hypercore')
+const Discovery = require('hyperdiscovery')
 const path = require('path')
 const os = require('os')
 const yargs = require('yargs')
@@ -8,7 +9,7 @@ const APP_ROOT = path.join(os.homedir(), `.${APP_NAME}`)
 
 const Item = require('./models/item')
 
-const _feed = hypercore(APP_ROOT, { createIfMissing: true, overwrite: false })
+const _feed = hypercore(APP_ROOT)
 
 function command (feed) {
   return yargs
@@ -53,7 +54,22 @@ function callback (err, res) {
   console.log(res)
 }
 
+var discovery = Discovery(_feed)
+
+console.log("My Peer ID: ", discovery.id.toString('hex'))
+
+discovery.on('connection', (peer, type) => {
+  console.log('got', peer, type)
+  console.log('connected to', discovery.connections, 'peers')
+
+  peer.on('close', function () {
+    console.log('peer disconnected')
+  })
+})
+
+
 _feed.on('ready', () => {
+  console.log('Feed ID: ', _feed.key.toString('hex'))
   const args = command(_feed)
 
   if (!args._[0]) {

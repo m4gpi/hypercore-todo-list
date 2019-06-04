@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "hypercore": "^7.2.0",
+    "hyperdiscovery": "^9.0.2",
     "os": "^0.1.1",
     "yargs": "^13.2.4"
   },
