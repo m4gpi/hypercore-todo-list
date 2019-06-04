@@ -6,10 +6,11 @@ const yargs = require('yargs')
 
 const APP_NAME = require('./package.json').name
 const APP_ROOT = path.join(os.homedir(), `.${APP_NAME}`)
+const FEED_KEY = 'a603500817d4f9dbbaa96b9421856156641833e361ee63d391d561a5375d9939'
 
 const Item = require('./models/item')
 
-const _feed = hypercore(APP_ROOT)
+const _feed = hypercore(APP_ROOT, FEED_KEY)
 
 function command (feed) {
   return yargs
