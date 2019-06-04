@@ -6,7 +6,9 @@
   "dependencies": {
     "hypercore": "^7.2.0",
     "hyperdiscovery": "^9.0.2",
+    "inherits": "^2.0.3",
     "os": "^0.1.1",
+    "thunky": "^1.0.3",
     "yargs": "^13.2.4"
   },
   "devDependencies": {},
