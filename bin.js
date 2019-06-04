@@ -1,19 +1,26 @@
 const hypercore = require('hypercore')
-const Discovery = require('hyperdiscovery')
 const path = require('path')
 const os = require('os')
 const yargs = require('yargs')
+const fs = require('fs')
 
 const APP_NAME = require('./package.json').name
 const APP_ROOT = path.join(os.homedir(), `.${APP_NAME}`)
-const FEED_KEY = 'a603500817d4f9dbbaa96b9421856156641833e361ee63d391d561a5375d9939'
+const PUBLIC_KEY = 'a603500817d4f9dbbaa96b9421856156641833e361ee63d391d561a5375d9939'
 
 const Item = require('./models/item')
+const swarm = require('./swarm')
 
-const _feed = hypercore(APP_ROOT, FEED_KEY)
+const _feed = fs.existsSync(`${APP_ROOT}/secret_key`)
+  ? hypercore(APP_ROOT)
+  : hypercore(APP_ROOT, PUBLIC_KEY)
 
 function command (feed) {
   return yargs
+    .command('share', 'share your list', (argv) => {
+      swarm(feed)
+    })
+
     .command('add', 'add an item to your list', (yargs) => {
       yargs.positional('name', {
         describe: 'give the item a name',
@@ -55,23 +62,10 @@ function callback (err, res) {
   console.log(res)
 }
 
-var discovery = Discovery(_feed)
-
-console.log("My Peer ID: ", discovery.id.toString('hex'))
-
-discovery.on('connection', (peer, type) => {
-  console.log('got', peer, type)
-  console.log('connected to', discovery.connections, 'peers')
-
-  peer.on('close', function () {
-    console.log('peer disconnected')
-  })
-})
-
-
 _feed.on('ready', () => {
-  console.log('Feed ID: ', _feed.key.toString('hex'))
   const args = command(_feed)
+
+  fs.existsSync(`${APP_ROOT}/secret_key`) ? null :  _feed.replicate()
 
   if (!args._[0]) {
     yargs.showHelp()
