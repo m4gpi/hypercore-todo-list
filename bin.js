@@ -40,13 +40,8 @@ function App () {
         hyperlist.remove({ itemId: id }, callback)
       })
 
-      .command('find', 'find an item from the list by its ID', (yargs) => {
-        yargs.positional('id', {
-          demandOption: true,
-          type: 'string'
-        })
-      }, (argv) => {
-        const { id } = argv
+      .command('find', 'find an item from the list by its ID', (argv) => {
+        const id = argv.argv._[1]
         hyperlist.find(id, callback)
       })
 

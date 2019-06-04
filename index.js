@@ -31,11 +31,17 @@ function HyperList (storage, key, opts) {
     this.feed((feed) => {
       var stream = feed.createReadStream({ start: 0, end: feed.length })
 
+      var found
       stream.on('data', (chunk) => {
-        var record = chunk.toString()
-        if (record.id === id) return callback(null, record)
+        var record = JSON.parse(chunk.toString())
+        if (record.id === id) {
+          found = record
+          stream.destroy()
+        }
       }).on('end', () => {
-        return callback(new Error('No record matching this ID'))
+        callback(new Error('No record matching this ID'))
+      }).on('close', () => {
+        callback(null, found)
       })
     })
   }
