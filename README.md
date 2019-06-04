@@ -8,16 +8,18 @@ To use the CLI:
 
 ```bash
 # add an item to the list
-node bin add --name item
+node bin add --name <insert name here>
 
-# get an item by index
-node bin get 1
+# remove an item from the list (soft delete)
+node bin remove --id <insert ID here>
 
-# display all items
-node bin display
+# find an item by its ID
+node bin find <insert ID here>
+
+# list all items
+node bin list
 ```
 
 ## TODO: 
-- Share the discovery key on the DHT and get bash a hash to share with friends
-- Add multifeed and kappa-core to allow multiple people to write to the todo list 
-- Implement the MVC pattern - build out a set of controllers and models - extract from the core application logic 
+- [x] extract from the core application logic
+- [] add multifeed and kappa-core to allow multiple people to write to the todo list
