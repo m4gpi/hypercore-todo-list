@@ -5,7 +5,7 @@ const fs = require('fs')
 
 const APP_NAME = require('./package.json').name
 const APP_ROOT = path.join(os.homedir(), `.${APP_NAME}`)
-const PUBLIC_KEY = 'a603500817d4f9dbbaa96b9421856156641833e361ee63d391d561a5375d9939'
+const PUBLIC_KEY = '3e2b1dc5b649c2fd569c523ad5ecc27b5f8748d45eff7918df8712d473daf27a'
 
 function App () {
   const HyperList = require('./index')
@@ -13,6 +13,8 @@ function App () {
   const hyperlist = new HyperList(APP_ROOT, PUBLIC_KEY)
 
   hyperlist.feed((feed) => Command(feed))
+
+  hyperlist.getKey(console.log)
 
   hyperlist.on('peer-added', (key) => {
     console.info(`${key} connected`)
@@ -25,7 +27,7 @@ function App () {
   function Command (feed) {
     return yargs
       .command('swarm', 'swarm to share your list', (argv) => {
-        hyperlist.swarm((swarm) => callback(null, swarm))
+        hyperlist.swarm((err, swarm) => callback(err, swarm))
       })
 
       .command('add', 'add an item to your list', (yargs) => {

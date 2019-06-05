@@ -2,7 +2,7 @@ const crypto = require('crypto')
 
 module.exports = RemoveItem
 
-RemoveItem.type = 'list/remove-item'
+RemoveItem.toString = 'list/remove-item'
 
 function RemoveItem (params) {
   const { id, itemId, createdAt } = params

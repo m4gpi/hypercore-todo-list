@@ -8,10 +8,11 @@ module.exports = function swarm (hyperlist, callback) {
 
     hyperlist.feed((feed) => {
       const swarm = Discovery(feed, key)
+
       swarm.on('connection', (peer, type) => {
         var remoteKey = peer.id.toString('hex')
 
-        hyperlist.replicate()
+        hyperlist.feed((feed) => feed.replicate())
         hyperlist._addConnection(remoteKey)
 
         peer.on('close', function () {

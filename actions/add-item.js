@@ -2,7 +2,7 @@ const crypto = require('crypto')
 
 module.exports = AddItem
 
-AddItem.type = 'list/add-item'
+AddItem.toString = 'list/add-item'
 
 function AddItem (params) {
   const { id, name, createdAt } = params

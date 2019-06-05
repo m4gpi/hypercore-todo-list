@@ -89,9 +89,9 @@ HyperList.prototype.list = function (callback) {
     stream.on('data', (chunk) => {
       const data = JSON.parse(chunk.toString())
       switch (data.type) {
-        case AddItem.type:
+        case AddItem.toString:
           items.push(new AddItem(data))
-        case RemoveItem.type:
+        case RemoveItem.toString:
           const index = items.map(item => item.id).indexOf(data.itemId)
           if (index !== -1) items.splice(index, 1)
       }
